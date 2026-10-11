@@ -1,4 +1,4 @@
-import SystemsMap from "@/components/SystemsMap";
+import MapExplorer from "@/components/MapExplorer";
 
 export default function Home() {
   return (
@@ -9,11 +9,11 @@ export default function Home() {
         </h1>
 
         <p className="text-slate-400">
-          Interactive Systems Map
+          Interactive systems and geographic map
         </p>
       </header>
 
-      <SystemsMap />
+      <MapExplorer />
     </main>
   );
 }

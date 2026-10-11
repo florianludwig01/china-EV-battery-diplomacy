@@ -8,8 +8,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,4 +21,213 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.react-flow .react-flow__node-default {
+  min-width: 140px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.react-flow .react-flow__node-default.node-state {
+  color: #dbeafe;
+  background-color: #1e3a8a;
+  border: 2px solid #60a5fa;
+}
+
+.react-flow .react-flow__node-default.node-company {
+  color: #dcfce7;
+  background-color: #14532d;
+  border: 2px solid #4ade80;
+}
+
+.react-flow .react-flow__node-default.node-institution {
+  color: #f3e8ff;
+  background-color: #581c87;
+  border: 2px solid #c084fc;
+}
+
+.react-flow .react-flow__node-default.node-resource {
+  color: #fef3c7;
+  background-color: #78350f;
+  border: 2px solid #fbbf24;
+}
+
+.react-flow .react-flow__node-default.node-industry {
+  color: #cffafe;
+  background-color: #164e63;
+  border: 2px solid #22d3ee;
+}
+
+.react-flow .react-flow__node-default.selected {
+  box-shadow: 0 0 0 3px rgb(255 255 255 / 35%);
+}
+
+.react-flow .react-flow__edge-path {
+  stroke-width: 2.5;
+}
+
+.react-flow .react-flow__edge-text {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.react-flow .react-flow__edge-textbg {
+  fill: #0f172a;
+  fill-opacity: 0.9;
+}
+
+.react-flow .edge-material .react-flow__edge-path {
+  stroke: #f59e0b;
+}
+
+.react-flow .edge-material .react-flow__edge-text {
+  fill: #fcd34d;
+}
+
+.react-flow .edge-material .react-flow__edge-textbg {
+  fill: #451a03;
+}
+
+.react-flow .edge-trade .react-flow__edge-path {
+  stroke: #38bdf8;
+}
+
+.react-flow .edge-trade .react-flow__edge-text {
+  fill: #7dd3fc;
+}
+
+.react-flow .edge-trade .react-flow__edge-textbg {
+  fill: #082f49;
+}
+
+.react-flow .edge-capital .react-flow__edge-path {
+  stroke: #4ade80;
+}
+
+.react-flow .edge-capital .react-flow__edge-text {
+  fill: #86efac;
+}
+
+.react-flow .edge-capital .react-flow__edge-textbg {
+  fill: #052e16;
+}
+
+.react-flow .edge-technology .react-flow__edge-path {
+  stroke: #c084fc;
+}
+
+.react-flow .edge-technology .react-flow__edge-text {
+  fill: #d8b4fe;
+}
+
+.react-flow .edge-technology .react-flow__edge-textbg {
+  fill: #3b0764;
+}
+
+.react-flow .edge-policy .react-flow__edge-path {
+  stroke: #f87171;
+  stroke-dasharray: 7 4;
+}
+
+.react-flow .edge-policy .react-flow__edge-text {
+  fill: #fca5a5;
+}
+
+.react-flow .edge-policy .react-flow__edge-textbg {
+  fill: #450a0a;
+}
+
+.react-flow__controls-button {
+  color: #0f172a;
+}
+
+.map-actor {
+  display: flex;
+  max-width: 150px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: white;
+  text-align: center;
+}
+
+.map-actor-dot {
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 3px solid white;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 3px rgb(15 23 42 / 65%);
+  transition: transform 150ms ease;
+}
+
+.map-actor:hover .map-actor-dot,
+.map-actor:focus-visible .map-actor-dot {
+  transform: scale(1.25);
+}
+
+.map-actor:focus-visible {
+  outline: 2px solid #7dd3fc;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.map-actor-label {
+  padding: 3px 6px;
+  border: 1px solid rgb(71 85 105 / 80%);
+  border-radius: 5px;
+  background: rgb(2 6 23 / 88%);
+  box-shadow: 0 4px 12px rgb(2 6 23 / 35%);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.map-actor-state .map-actor-dot {
+  background: #60a5fa;
+}
+
+.map-actor-company .map-actor-dot {
+  background: #4ade80;
+}
+
+.map-actor-institution .map-actor-dot {
+  background: #c084fc;
+}
+
+.map-actor-resource .map-actor-dot {
+  background: #fbbf24;
+}
+
+.map-actor-industry .map-actor-dot {
+  background: #22d3ee;
+}
+
+.maplibregl-popup-content {
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: #0f172a;
+  box-shadow: 0 18px 40px rgb(2 6 23 / 45%);
+}
+
+.maplibregl-popup-tip {
+  border-bottom-color: #0f172a !important;
+  border-top-color: #0f172a !important;
+}
+
+.maplibregl-popup-close-button {
+  padding: 5px 8px;
+  color: #cbd5e1;
+  font-size: 18px;
+}
+
+.maplibregl-popup-close-button:hover {
+  background: transparent;
+  color: white;
 }
