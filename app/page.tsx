@@ -66,12 +66,6 @@ export default function Home() {
           <h2 className="section-title max-w-3xl">
             Sources used for the analytical framework.
           </h2>
-          <p className="mt-6 max-w-3xl text-base leading-7 text-slate-400">
-            The bibliography combines international energy-system analysis,
-            binding European legislation and a sector-specific standards
-            initiative. Entity-level relationships should be supplemented with
-            company reports and project documents in a later research stage.
-          </p>
 
           <ol className="mt-14 divide-y divide-white/10 border-y border-white/10">
             {academicSources.map((source) => (
