@@ -17,7 +17,7 @@ export default function Hero() {
           <time dateTime="2026-10-12">12 October 2026</time>
         </p>
 
-        <h1 className="max-w-5xl text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-white sm:text-7xl lg:text-[clamp(5rem,9vw,8.5rem)]">
+        <h1 className="max-w-none text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.05em] text-white sm:text-7xl lg:text-[clamp(5rem,9vw,8.5rem)]">
           China&apos;s EV Battery Diplomacy
         </h1>
 

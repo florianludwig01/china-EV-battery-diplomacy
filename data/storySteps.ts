@@ -29,6 +29,7 @@ export const storySteps: StoryStep[] = [
       "huayou",
       "cmoc",
       "chinese-refining",
+      "chinese-materials",
     ],
     activeEdgeIds: [
       "ganfeng-australia",
