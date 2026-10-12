@@ -1,8 +1,10 @@
 import {
   actorCategories,
+  feedbackLoops,
   relationCategories,
   relationStyles,
   type ActorCategory,
+  type FeedbackLoopId,
   type RelationCategory,
 } from "@/data/systemsMap";
 
@@ -27,6 +29,8 @@ type MapFiltersProps = {
   visibleRelations: ReadonlySet<RelationCategory>;
   onToggleActor: (category: ActorCategory) => void;
   onToggleRelation: (category: RelationCategory) => void;
+  activeFeedbackLoopId: FeedbackLoopId | null;
+  onSelectFeedbackLoop: (id: FeedbackLoopId) => void;
   onReset: () => void;
 };
 
@@ -35,6 +39,8 @@ export default function MapFilters({
   visibleRelations,
   onToggleActor,
   onToggleRelation,
+  activeFeedbackLoopId,
+  onSelectFeedbackLoop,
   onReset,
 }: MapFiltersProps) {
   return (
@@ -97,6 +103,48 @@ export default function MapFilters({
                   />
                   {relationLabels[category]}
                 </button>
+              );
+            })}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Feedback loops
+          </legend>
+          <div className="space-y-2">
+            {feedbackLoops.map((loop) => {
+              const active = activeFeedbackLoopId === loop.id;
+
+              return (
+                <div key={loop.id}>
+                  <button
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => onSelectFeedbackLoop(loop.id)}
+                    className={`w-full rounded-lg border px-3 py-2 text-left transition ${
+                      active
+                        ? "border-slate-400 bg-slate-800 text-white"
+                        : "border-slate-700 bg-slate-900 text-slate-300 hover:border-slate-500"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2 text-xs font-semibold">
+                      <span
+                        className="h-2.5 w-2.5 rounded-full"
+                        style={{ backgroundColor: loop.color }}
+                      />
+                      {loop.code} · {loop.label}
+                    </span>
+                    <span className="mt-1 block text-[11px] text-slate-500">
+                      {loop.kind}
+                    </span>
+                  </button>
+                  {active ? (
+                    <p className="px-2 pt-2 text-xs leading-5 text-slate-400">
+                      {loop.description}
+                    </p>
+                  ) : null}
+                </div>
               );
             })}
           </div>

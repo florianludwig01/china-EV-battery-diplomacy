@@ -3,8 +3,9 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "China EV Battery Diplomacy",
-  description: "Interactive systems map of China’s EV battery diplomacy",
+  title: "China’s Battery Diplomacy | Interactive Systems Analysis",
+  description:
+    "An interactive exploration of the actors, dependencies and value-chain relationships shaping China’s EV battery diplomacy.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

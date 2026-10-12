@@ -8,8 +8,10 @@ import SystemsMap from "@/components/SystemsMap";
 import WorldMap from "@/components/WorldMap";
 import {
   actorCategories,
+  feedbackLoops,
   relationCategories,
   type ActorCategory,
+  type FeedbackLoopId,
   type RelationCategory,
 } from "@/data/systemsMap";
 
@@ -32,6 +34,10 @@ export default function MapExplorer() {
   const [visibleRelations, setVisibleRelations] = useState<
     Set<RelationCategory>
   >(() => new Set(relationCategories));
+  const [activeFeedbackLoopId, setActiveFeedbackLoopId] =
+    useState<FeedbackLoopId | null>(null);
+  const activeFeedbackLoop =
+    feedbackLoops.find((loop) => loop.id === activeFeedbackLoopId) ?? null;
 
   function toggleActor(category: ActorCategory) {
     setVisibleActors((current) => {
@@ -64,6 +70,11 @@ export default function MapExplorer() {
   function resetFilters() {
     setVisibleActors(new Set(actorCategories));
     setVisibleRelations(new Set(relationCategories));
+    setActiveFeedbackLoopId(null);
+  }
+
+  function selectFeedbackLoop(id: FeedbackLoopId) {
+    setActiveFeedbackLoopId((current) => (current === id ? null : id));
   }
 
   return (
@@ -110,22 +121,44 @@ export default function MapExplorer() {
             visibleRelations={visibleRelations}
             onToggleActor={toggleActor}
             onToggleRelation={toggleRelation}
+            activeFeedbackLoopId={activeFeedbackLoopId}
+            onSelectFeedbackLoop={selectFeedbackLoop}
             onReset={resetFilters}
           />
         </aside>
 
-        <div className="min-w-0">
-          {view === "systems" ? (
+        <div className="relative h-[75vh] min-h-[520px] min-w-0">
+          <div
+            className={`absolute inset-0 ${
+              view === "systems"
+                ? "visible z-10 opacity-100"
+                : "invisible z-0 opacity-0"
+            }`}
+            aria-hidden={view !== "systems"}
+            inert={view !== "systems"}
+          >
             <SystemsMap
               visibleActors={visibleActors}
               visibleRelations={visibleRelations}
+              activeFeedbackLoop={activeFeedbackLoop}
             />
-          ) : (
+          </div>
+
+          <div
+            className={`absolute inset-0 ${
+              view === "geographic"
+                ? "visible z-10 opacity-100"
+                : "invisible z-0 opacity-0"
+            }`}
+            aria-hidden={view !== "geographic"}
+            inert={view !== "geographic"}
+          >
             <WorldMap
               visibleActors={visibleActors}
               visibleRelations={visibleRelations}
+              activeFeedbackLoop={activeFeedbackLoop}
             />
-          )}
+          </div>
         </div>
       </div>
     </section>

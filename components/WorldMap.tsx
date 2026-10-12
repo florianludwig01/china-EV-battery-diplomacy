@@ -19,8 +19,17 @@ import {
   relationStyles,
   type ActorCategory,
   type ActorNode,
+  type FeedbackLoop,
   type RelationCategory,
 } from "@/data/systemsMap";
+
+const labelZoomByCategory: Record<ActorCategory, number> = {
+  state: 1.5,
+  institution: 1.8,
+  industry: 2.3,
+  company: 3,
+  resource: 3,
+};
 
 setWorkerUrl(
   new URL(
@@ -34,6 +43,8 @@ type RelationProperties = {
   label: string;
   category: RelationCategory;
   color: string;
+  opacity: number;
+  width: number;
 };
 
 const relationLayer: LayerProps = {
@@ -45,14 +56,15 @@ const relationLayer: LayerProps = {
   },
   paint: {
     "line-color": ["get", "color"],
-    "line-width": 2.5,
-    "line-opacity": 0.82,
+    "line-width": ["get", "width"],
+    "line-opacity": ["get", "opacity"],
   },
 };
 
 const relationLabelLayer: LayerProps = {
   id: "battery-relation-labels",
   type: "symbol",
+  minzoom: 2.2,
   layout: {
     "symbol-placement": "line",
     "symbol-spacing": 240,
@@ -65,19 +77,23 @@ const relationLabelLayer: LayerProps = {
     "text-color": ["get", "color"],
     "text-halo-color": "#020617",
     "text-halo-width": 1.5,
+    "text-opacity": ["get", "opacity"],
   },
 };
 
 type WorldMapProps = {
   visibleActors: ReadonlySet<ActorCategory>;
   visibleRelations: ReadonlySet<RelationCategory>;
+  activeFeedbackLoop: FeedbackLoop | null;
 };
 
 export default function WorldMap({
   visibleActors,
   visibleRelations,
+  activeFeedbackLoop,
 }: WorldMapProps) {
   const [selectedActor, setSelectedActor] = useState<ActorNode | null>(null);
+  const [zoom, setZoom] = useState(1.25);
 
   const geographicNodes = useMemo(
     () =>
@@ -115,6 +131,11 @@ export default function WorldMap({
           return [];
         }
 
+        const highlighted =
+          activeFeedbackLoop?.edgeIds.some(
+            (edgeId: string) => edgeId === edge.id,
+          ) ?? false;
+
         return [
           {
             type: "Feature" as const,
@@ -122,7 +143,11 @@ export default function WorldMap({
               id: edge.id,
               label: String(edge.label ?? "Relation"),
               category,
-              color: relationStyles[category].color,
+              color: highlighted
+                ? activeFeedbackLoop?.color ?? relationStyles[category].color
+                : relationStyles[category].color,
+              opacity: activeFeedbackLoop ? (highlighted ? 0.95 : 0.1) : 0.82,
+              width: highlighted ? 5 : 2.5,
             },
             geometry: {
               type: "LineString" as const,
@@ -135,7 +160,7 @@ export default function WorldMap({
         ];
       }),
     };
-  }, [visibleActors, visibleRelations]);
+  }, [activeFeedbackLoop, visibleActors, visibleRelations]);
 
   return (
     <section className="relative h-[75vh] min-h-[520px] w-full overflow-hidden bg-slate-900">
@@ -148,6 +173,7 @@ export default function WorldMap({
         }}
         minZoom={0.1}
         maxZoom={70}
+        onMove={(event) => setZoom(event.viewState.zoom)}
         mapStyle="https://demotiles.maplibre.org/style.json"
         style={{ width: "100%", height: "100%" }}
       >
@@ -165,6 +191,14 @@ export default function WorldMap({
             return null;
           }
 
+          const showLabel =
+            zoom >= labelZoomByCategory[node.data.category];
+          const highlighted =
+            !activeFeedbackLoop ||
+            activeFeedbackLoop.nodeIds.some(
+              (nodeId: string) => nodeId === node.id,
+            );
+
           return (
             <Marker
               key={node.id}
@@ -175,6 +209,10 @@ export default function WorldMap({
               <button
                 type="button"
                 className={`map-actor map-actor-${node.data.category}`}
+                style={{
+                  opacity: highlighted ? 1 : 0.16,
+                  transition: "opacity 200ms ease",
+                }}
                 onClick={(event) => {
                   event.stopPropagation();
                   setSelectedActor(node);
@@ -182,7 +220,9 @@ export default function WorldMap({
                 aria-label={`Show details for ${node.data.label}`}
               >
                 <span className="map-actor-dot" />
-                <span className="map-actor-label">{node.data.label}</span>
+                {showLabel ? (
+                  <span className="map-actor-label">{node.data.label}</span>
+                ) : null}
               </button>
             </Marker>
           );
